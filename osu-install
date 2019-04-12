@@ -124,7 +124,7 @@ wineserver -k' | sudo tee -a /bin/osukill
 selection() { # Make dialog select menu for additional things
 
 OPTIONS=(1 "Setup tablet/mouse and much more"
-	 2 "Install osu-stuff \(Has osu!direct feature without osu! supporter and much more\)")
+	 2 "Install osu-stuff (Has osu!direct feature without osu! supporter and much more)")
 
 selectoutput=$(dialog --title "$tits" \
                 --menu "Do additional things:" \
