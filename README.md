@@ -1,4 +1,6 @@
-# Install osu! on Linux by executing one script and pressing ENTER! It just takes shy of ~4 minutes on my machine (Could take less on yours) to have fully functioning osu!.
+# osu-install
+Install osu! on Linux by executing one script and pressing ENTER! It just takes shy of ~4 minutes on my machine (Could take less on yours) to have fully functioning osu!.
+
 Yes, exactly, that's what this script does do! No more need to hassle with the difficult and time-consuming installation.
 
 # How do I execute this script?
