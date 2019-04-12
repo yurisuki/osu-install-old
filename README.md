@@ -14,6 +14,7 @@ That's it!
 # FAQ
 But why tho?
 - It takes really long time to install osu! on Linux manually and it's tiring. That's why I made this.
+
 When will script for other distros will be made?
 - Well, I don't have any time to do it, but once I'll have free time I'll do it!
 
