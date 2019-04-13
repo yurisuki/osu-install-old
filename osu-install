@@ -10,7 +10,6 @@ ping 1.1.1.1 -c 1 || exit
 tits="yuri's osu! installing script" # It's for title, not for tiddies.
 confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
-distro=$(cat /etc/os-release)
 
 ### Functions
 fuck() { # This one will tell you an error.
