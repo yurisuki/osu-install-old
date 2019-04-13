@@ -10,6 +10,7 @@ ping 1.1.1.1 -c 1 || exit
 tits="yuri's osu! installing script" # It's for title, not for tiddies.
 confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
+distro=$(cat /etc/os-release)
 
 ### Functions
 fuck() { # This one will tell you an error.
@@ -38,7 +39,7 @@ archpreparing() { # This one will prepare all scripts for installation
 [thepoon]
 Server = https://archrepo.thepoon.fr
 Server = https://mirrors.celianvdb.fr/archlinux/thepoon" >> /etc/pacman.conf'
-	sudo pacman --noconfirm -Syy wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal
+	sudo pacman --noconfirm -Syy wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip
 }
 
 setupwine() { # This one will make wineprefix and will install osu!.
@@ -124,7 +125,8 @@ wineserver -k' | sudo tee -a /bin/osukill
 selection() { # Make dialog select menu for additional things
 
 OPTIONS=(1 "Setup tablet/mouse and much more"
-	 2 "Install osu-stuff (Has osu!direct feature without osu! supporter and much more)")
+	 2 "Install osu-stuff (Has osu!direct feature without osu! supporter and much more)"
+	 3 "Install Asian fonts")
 
 selectoutput=$(dialog --title "$tits" \
                 --menu "Do additional things:" \
@@ -143,6 +145,10 @@ case $selectoutput in
 	    bash osu-i
 	    selection
             ;;
+	3)
+	    xdg-open "https://osu.ppy.sh/community/forums/topics/367783"
+	    selection
+	    ;;
 esac
 }
 
