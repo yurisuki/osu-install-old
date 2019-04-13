@@ -168,5 +168,5 @@ setupwine
 selection
 
 # IT'S DONE JNSAEKLODHSAKJLDHASOKJDHASKJDHKASDHAKSED
-dialog --title "$tits" --msgbox "Everything has been done! Restart your computer to make the latency patch take effect.\nYou can turn on osu! by using 'osu', and\nkill osu! by using 'osukill' (in case osu! freezes or won't start.)\n\nAlso, sound may be cracking (in whole system), you can fix this by running 'fixcrack' command.\n\n~ Thank you for using this script." 15 80
+dialog --title "$tits" --msgbox "Everything has been done! Restart your computer to make the latency patch take effect.\nYou can turn on osu! by using 'osu', and\nkill osu! by using 'osukill' (in case osu! freezes or won't start.)\n\nAlso, sound may be cracking (in whole system), you can fix this by running 'fixcrack' command.\n\n~ Thank you for using this script. <3" 15 80
 
