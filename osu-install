@@ -48,6 +48,9 @@ nonarchpreparing() { # This one will prepare all scripts for installation (For n
 	tar xf ~/wine-osu.tar.xz
 	dialog --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
 	sudo mv ~/opt/wine-osu/ /opt/
+	curl --output ~/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+	chmod +x ~/winetricks
+	sudo mv -v ~/winetricks /usr/local/bin
 }
 
 setupwine() { # This one will make wineprefix and will install osu!.
@@ -62,7 +65,7 @@ setupwine() { # This one will make wineprefix and will install osu!.
 	dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "Do not install Mono or Gecko.\n\nPress next at every step.\n\nIf you’re prompted to reboot your computer, no matter the choice it won’t reboot and will be fine." 12 50 || fuck "Nevermind! You can open this script at anytime and the installation will continue." 6 50
 	echo -e "This shouldn't take long time.\nDon't care about errors, unless script stops you, then something actually failed."
 	sleep 1
-	winetricks --unattended gdiplus dotnet40 & sleep 120 && killall wineserver mscorsvw.exe winetricks
+	winetricks --unattended gdiplus dotnet462 & sleep 120 && killall wineserver mscorsvw.exe winetricks
 	mkdir ~/Downloads || clear
 	echo "Downloading osu!"
 	curl -o ~/Downloads/osui.exe https://m1.ppy.sh/r/osu\!install.exe
