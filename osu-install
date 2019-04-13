@@ -119,6 +119,15 @@ export WINEPREFIX="$HOME/.wine_osu"
 
 wineserver -k' | sudo tee -a /bin/osukill
 	sudo chmod +x /bin/osukill /bin/osu /bin/fixcrack
+	curl --output ~/.local/share/icons/osu\!.png https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Osulogo.png/220px-Osulogo.png
+	echo '[Desktop Entry]
+Type=Application
+Name=osu!
+Icon=osu!.png
+Exec=osu %u
+StartupWMClass=osu!.exe
+Categories=Game;
+MimeType=x-scheme-handler/discord-367827983903490050;x-scheme-handler/osu;' > ~/.local/share/applications/osu\!.desktop
 }
 
 selection() { # Make dialog select menu for additional things
