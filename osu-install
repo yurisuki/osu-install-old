@@ -70,7 +70,7 @@ fixlatency() { # This one will set up some things after setupwine has succeeded
 	echo "$USER" > /tmp/osuuser
 	sudo bash -c 'echo -e "$(cat /tmp/osuuser) - nice -20\n$(cat /tmp/osuuser) - rtprio 99" > /etc/security/limits.conf'
 
-	mkdir -p /etc/pulse/daemon.conf.d/
+	sudo mkdir -p /etc/pulse/daemon.conf.d/
 	echo "high-priority = yes
 nice-level = -15
 
