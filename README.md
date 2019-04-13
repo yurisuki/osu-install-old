@@ -11,7 +11,7 @@ curl https://raw.githubusercontent.com/yurisuki/osu-install/master/osu-install |
 That's it!
 
 # TODO/GOALS
-- ~Make installation script for other distros than Arch Linux~~~~
+- ~~Make installation script for other distros than Arch Linux~~
 
 # FAQ
 But why tho?
