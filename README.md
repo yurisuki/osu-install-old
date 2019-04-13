@@ -17,8 +17,5 @@ That's it!
 But why tho?
 - It takes really long time to install osu! on Linux manually and it's tiring. That's why I made this.
 
-When will script for other distros will be made?
-- Well, I don't have any time to do it, but once I'll have free time I'll do it!
-
 # Huge thanks to ThePooN!
 He made the low-latency on PulseAudio possible, thank you for that. He did all the work, and I just stole it.
