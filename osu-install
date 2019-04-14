@@ -3,7 +3,7 @@
 # Depends on: wine, dialog..
 
 # Check internet. If no connection was established exit.
-ping 1.1.1.1 -c 1 || exit
+ping -c 1 1.1.1.1 || exit
 
 
 ### Variables
@@ -26,7 +26,7 @@ afterwelcome() { # This one will check distro you use.
 	dialog --title "$tits" --infobox "Checking distro you ran this script on..."
 	if cat /etc/os-release | egrep "Manjaro|Arch|Antergos|Artix|Parabola"; then
     		archpreparing
-	else
+	else-c 1
     		nonarchpreparing
 	fi
 }
