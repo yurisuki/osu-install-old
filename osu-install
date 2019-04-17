@@ -127,7 +127,7 @@ export STAGING_AUDIO_DURATION=10000 # This one is the most stable value for most
 export PATH="/opt/wine-osu/bin:$PATH"
 
 cd ~/osudir
-wine osu!.exe "$@"' | sudo tee /bin/osu
+wine osu\!.exe "$@"' | sudo tee /bin/osu
 
 	echo '#!/usr/bin/env bash
 export WINEPREFIX="$HOME/.wine_osu"
