@@ -55,6 +55,7 @@ nonarchpreparing() { # This one will prepare all scripts for installation (For n
 	curl --output ~/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
 	chmod +x ~/winetricks
 	sudo mv -v ~/winetricks /usr/local/bin
+	dialog --title "$tits" --msgbox "I highly recommend installing 'wine' locally on your machine from your package manager, even though 'wine' was installed by this script to get rid of the dependency hell. :)\n\n\n$continue" 13 50
 }
 
 setupwine() { # This one will make wineprefix and will install osu!.
