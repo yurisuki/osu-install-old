@@ -61,8 +61,7 @@ IN THE TERMINAL TO MAKE THE SCRIPT CONTINUE!\n\n\n$continue" 13 45 || fuck "You'
 }
 
 fixlatency() { # This one will set up some things after setupwine has succeeded
-	echo "$USER" > /tmp/osuuser
-	echo -e "$(cat /tmp/osuuser) - nice -20\n$(cat /tmp/osuuser) - rtprio 99" | sudo tee /etc/security/limits.conf
+	echo -e "$USER - nice -20\n$USER - rtprio 99" | sudo tee /etc/security/limits.conf
 
 	sudo mkdir -p /etc/pulse/daemon.conf.d/
 	echo "high-priority = yes
