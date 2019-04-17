@@ -26,7 +26,7 @@ afterwelcome() { # This one will check distro you use.
 	dialog --title "$tits" --infobox "Checking distro you ran this script on..."
 	if cat /etc/os-release | egrep "Manjaro|Arch|Antergos|Artix|Parabola"; then
     		archpreparing
-	else-c 1
+	else
     		nonarchpreparing
 	fi
 }
