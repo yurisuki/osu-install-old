@@ -83,8 +83,7 @@ IN THE TERMINAL TO MAKE THE SCRIPT CONTINUE!\n\n\n$continue" 13 45 || fuck "You'
 }
 
 fixlatency() { # This one will set up some things after setupwine has succeeded
-	echo "$USER" > /tmp/osuuser
-	echo -e "$(cat /tmp/osuuser) - nice -20\n$(cat /tmp/osuuser) - rtprio 99" | sudo tee /etc/security/limits.conf
+	echo -e "$USER - nice -20\n$USER - rtprio 99" | sudo tee /etc/security/limits.conf
 
 	sudo mkdir -p /etc/pulse/daemon.conf.d/
 	echo "high-priority = yes
@@ -103,7 +102,7 @@ default-fragment-size-msec = 2 # You can set this to 1, but that will break OBS 
 }
 
 afterwine() { # This one will make osu! scripts
-	ln -sv ~/.wine_osu/drive_c/users/$(cat /tmp/osuuser)/Local\ Settings/Application\ Data/osu\!/ ~/osudir
+	ln -sv ~/.wine_osu/drive_c/users/$USER/Local\ Settings/Application\ Data/osu\!/ ~/osudir
 
 	echo '#!/usr/bin/env bash
 # This script will fix the PulseAudio crack.
