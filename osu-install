@@ -10,6 +10,9 @@ ping -c 1 1.1.1.1 || exit
 tits="yuri's osu! installing script" # It's for title, not for tiddies.
 confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
+packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
+downloaded="Downloaded."
+spacing="\n\n\n\n\n\n\n"
 
 ### Functions
 fuck() { # This one will tell you an error.
@@ -31,6 +34,17 @@ afterwelcome() { # This one will check distro you use.
 	fi
 }
 
+archdwn() {
+	echo "Downloading needed packages."
+	echo ----------------------------
+	sudo pacman --noconfirm --needed -Syy $packages 2>&1
+	echo -e "$spacing"
+	echo "Downloading needed packages."
+	echo ----------------------------
+	echo "$downloaded"
+	echo -e "\n\n"
+	echo "$continue"
+}
 
 archpreparing() { # This one will prepare all scripts for installation (For arch-based distro)
 	dialog --title "$tits" --infobox "I've detected that you use Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
@@ -42,7 +56,8 @@ archpreparing() { # This one will prepare all scripts for installation (For arch
 [thepoon]
 Server = https://archrepo.thepoon.fr
 Server = https://mirrors.celianvdb.fr/archlinux/thepoon" | sudo tee -a /etc/pacman.conf
-	sudo pacman --noconfirm -Syy wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip
+
+archdwn | dialog --title "$tits" --programbox 24 90
 }
 
 nonarchpreparing() { # This one will prepare all scripts for installation (For non arch-based distro)
@@ -58,6 +73,18 @@ nonarchpreparing() { # This one will prepare all scripts for installation (For n
 	dialog --title "$tits" --msgbox "I highly recommend installing 'wine' locally on your machine from your package manager, even though 'wine' was installed by this script to get rid of the dependency hell. :)\n\n\n$continue" 13 50
 }
 
+download_osu() { # This one will download osu! and give you info about it.
+	echo "Downloading osu! ..."
+	echo --------------------
+	curl -o ~/Downloads/osui.exe https://m1.ppy.sh/r/osu\!install.exe 2>&1
+	echo -e "$spacing"
+	echo "Downloading osu! ..."
+	echo --------------------
+	echo "$downloaded"
+	echo -e "\n\n"
+	echo $continue
+}
+
 setupwine() { # This one will make wineprefix and will install osu!.
 	dialog --title "$tits" --infobox "Making wineprefix" 3 21
 	sleep 0.5
@@ -68,12 +95,10 @@ setupwine() { # This one will make wineprefix and will install osu!.
 	# to update PATH to make sure we're using the right Wine binary
 	export PATH=/opt/wine-osu/bin:$PATH
 	dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "Do not install Mono or Gecko.\n\nPress next at every step.\n\nIf you’re prompted to reboot your computer, no matter the choice it won’t reboot and will be fine." 12 50 || fuck "Nevermind! You can open this script at anytime and the installation will continue." 6 50
-	echo -e "This shouldn't take long time.\nDon't care about errors, unless script stops you, then something actually failed."
-	sleep 1
-	winetricks --unattended gdiplus dotnet462 & sleep 120 && killall wineserver mscorsvw.exe winetricks
+	dialog --title "$tits" --infobox "Installing all dependencies into wineprefix! \n\nThis will take ~2 minutes." 5 50
+	winetricks --unattended gdiplus dotnet462 >/dev/null & sleep 120 && killall wineserver mscorsvw.exe winetricks
 	mkdir ~/Downloads || clear
-	echo "Downloading osu!"
-	curl -o ~/Downloads/osui.exe https://m1.ppy.sh/r/osu\!install.exe
+	download_osu | dialog --title "$tits" --programbox 24 90
 	dialog --title "WARNING!" --msgbox "Leave the install dir as it is, otherwise osu! won't work!\n\nCLOSE osu! AFTER IT WAS INSTALLED, AND PRESS ANY KEY
 IN THE TERMINAL TO MAKE THE SCRIPT CONTINUE!\n\n\n$continue" 13 45 || fuck "You've quit lmao"
 	wine ~/Downloads/osui.exe
@@ -176,6 +201,11 @@ case $selectoutput in
 esac
 }
 
+check_install() {
+ls ~/osudir | grep osu\!.exe || fuck "Oh no, osu! didn't install.\n\nPossibilities are:\nYou've changed the installation direction.\nosu! installer
+didn't run.\nSome dependencies didn't install.\n\nTry:\nRun the script again\nLeave the installation direction as it should be (defaultly selected by osu! installer)\n\nIf that didn't help try reporting it on GitHub. Thank you. <3"
+}
+
 ### Execute variables
 # Check if command was executed with sudo.
 if [ $USER == root ]; then
@@ -193,6 +223,9 @@ afterwelcome
 
 # Setup wine after all dependencies were installed
 setupwine
+
+# Check if osu! installed.
+check_install
 
 # Show select menu for additional things.
 selection
