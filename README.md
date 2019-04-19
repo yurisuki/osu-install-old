@@ -20,10 +20,10 @@ osu-installonarch.sh 	> used for aur package (edited version of osu-install that
 
 ## table of contents
  - [introduction](#introduction)
- - [how do I execute this script?](how-do-i-execute-this-script)
+ - [how do I execute this script?](#how-do-i-execute-this-script)
  - [todo/goals](#todogoals)
  - [faq](#faq)
- - [huge thanks to ThePooN!](huge-thanks-to-thepoon)
+ - [huge thanks to ThePooN!](#huge-thanks-to-thepoon)
 
 # introduction
 Install osu! on Linux by executing one script and pressing ENTER! It just takes shy of ~4 minutes on my machine (Could take less on yours) to have fully functioning osu!.
