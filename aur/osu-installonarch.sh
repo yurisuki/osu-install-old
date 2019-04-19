@@ -197,6 +197,10 @@ dialog --help || fuck "Dialog is not installed."
 # Welcome message
 welcome || fuck "Interupted by user."
 
+## AUR
+# Install dependencies
+archpreparing
+
 # Setup wine after all dependencies were installed
 setupwine
 
