@@ -37,6 +37,12 @@ curl https://raw.githubusercontent.com/yurisuki/osu-install/master/osu-install |
 ```
 That's it!
 
+
+For Arch-based distribution I recommend using the AUR package I maintain.
+```
+# Replace YOURAURHELPER with AUR helper you use (e.g. pacaur, yay, yaourt)
+YOURAURHELPER -S osu-install
+```
 # todo/goals
 - ~~Make installation script for other distros than Arch Linux~~
 
