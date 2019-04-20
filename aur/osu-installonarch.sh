@@ -102,7 +102,8 @@ resample-method = speex-float-0
 default-fragments = 2 # Minimum is 2
 default-fragment-size-msec = 2 # You can set this to 1, but that will break OBS audio capture." | sudo tee /etc/pulse/daemon.conf.d/10-better-latency.conf
 
-	sudo sed -i -e 's/tsched=1/tsched=0/g' /etc/pulse/default.pa
+	cat /etc/pulse/default.pa | grep tsched && sudo sed -i -e 's/tsched=1/tsched=0/g' /etc/pulse/default.pa || echo "load-module module-udev-detect tsched=0" | sudo tee -a /etc/pulse/default.pa
+
 	afterwine
 }
 
