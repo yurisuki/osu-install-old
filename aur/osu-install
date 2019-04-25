@@ -4,8 +4,7 @@
 # This is tweaked version of osu-install for AUR package I maintain.
 
 # Check internet. If no connection was established exit.
-ping -c 1 1.1.1.1 || exit
-
+ping -c 1 1.1.1.1 >/dev/null || exit 1
 
 ### Variables
 tits="yuri's osu! installing script (AUR Version)" # It's for title, not for tiddies.
@@ -193,7 +192,7 @@ if [ $USER == root ]; then
 fi
 
 # Check if dialog is installed
-dialog --help || fuck "Dialog is not installed."
+dialog --help >/dev/null || fuck "Dialog is not installed."
 
 # Welcome message
 welcome || fuck "Interupted by user."
