@@ -14,7 +14,7 @@ osu-install	> the main script which downloads ThePooN's wine, setups wineprefix 
 
 aur
 ---
-osu-installonarch.sh 	> used for aur package (edited version of osu-install that doesn't have installation for other distros than Arch Linux.)
+osu-install.sh 	    > used for aur package (edited version of osu-install that doesn't have installation for other distros than Arch Linux.)
 ---
 ```
 
