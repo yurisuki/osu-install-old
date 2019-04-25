@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
+version=2 # Version of this file
 # This script will install osu! using ThePooN's method and tweaks.
 # Depends on: wine, dialog..
 
 # Check internet. If no connection was established exit.
-ping -c 1 1.1.1.1 || exit
-
+ping -c 1 1.1.1.1 >/dev/null || exit 1
 
 ### Variables
 tits="yuri's osu! installing script" # It's for title, not for tiddies.
@@ -13,6 +13,16 @@ continue="Press ENTER to continue"
 packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
 downloaded="Downloaded."
 spacing="\n\n\n\n\n\n\n"
+gitversion=$(curl ...)
+
+# Check for the version and tell, if the version isn't up-to-date with the github's.
+if [[ $gitversion = $version ]]; then
+	echo ""
+else
+	echo "Your version is $version, but it's not up-to-date with repository's version, which is $gitversion"
+	echo "Sleeping for 5 seconds."
+	sleep 5
+fi
 
 ### Functions
 fuck() { # This one will tell you an error.
@@ -34,7 +44,7 @@ afterwelcome() { # This one will check distro you use.
 	fi
 }
 
-archdwn() {
+archdwn() { # This one will download all needed packages for the installation
 	echo "Downloading needed packages."
 	echo ----------------------------
 	sudo pacman --noconfirm --needed -Syy $packages 2>&1
@@ -46,6 +56,25 @@ archdwn() {
 	echo "$continue"
 }
 
+winedwn() { # This one will download osu! and give you info about it.
+	echo "Downloading wine ..."
+	echo --------------------
+	curl --output ~/wine-osu.tar.xz https://mirrors.celianvdb.fr/archlinux/thepoon/wine-osu-3.13-1-x86_64.pkg.tar.xz 2>&1
+	echo -e "$spacing"
+	echo "Downloading wine ..."
+	echo --------------------
+	echo "$downloaded"
+	echo -e "$spacing"
+	echo "Downloading winetricks ..."
+	echo -------------------------
+	curl --output ~/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks 2>&1
+	echo -e "$spacing"
+	echo "Downloading winetricks ..."
+	echo -------------------------
+	echo "$downloaded"
+	echo -e "\n\n"
+	echo $continue
+}
 archpreparing() { # This one will prepare all scripts for installation (For arch-based distro)
 	dialog --title "$tits" --infobox "I've detected that you use Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
 	sleep 5
@@ -62,12 +91,13 @@ archdwn | dialog --title "$tits" --programbox 24 90
 
 nonarchpreparing() { # This one will prepare all scripts for installation (For non arch-based distro)
 	dialog --title "$tits" --infobox "I've detected that you use non Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
-	sleep 5
-	curl -q --output ~/wine-osu.tar.xz https://mirrors.celianvdb.fr/archlinux/thepoon/wine-osu-3.13-1-x86_64.pkg.tar.xz
-	tar xf ~/wine-osu.tar.xz
+	sleep 2
+	winedwn | dialog --title "$tits" --programbox 24 90
+	dialog --title "$tits" --infobox "Extracting wine." 3 25
+	cd ~/
+	tar xf wine-osu.tar.xz >/dev/null 2>&1
 	dialog --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
-	sudo mv ~/opt/wine-osu/ /opt/
-	curl --output ~/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+	sudo mv -v ~/opt/wine-osu/ /opt/
 	chmod +x ~/winetricks
 	sudo mv -v ~/winetricks /usr/local/bin
 	dialog --title "$tits" --msgbox "I highly recommend installing 'wine' locally on your machine from your package manager, even though 'wine' was installed by this script to get rid of the dependency hell. :)\n\n\n$continue" 13 50
