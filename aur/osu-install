@@ -191,9 +191,6 @@ if [ $USER == root ]; then
 	fuck "You executed this script as root."
 fi
 
-# Check if dialog is installed
-dialog --help >/dev/null || fuck "Dialog is not installed."
-
 # Welcome message
 welcome || fuck "Interupted by user."
 
