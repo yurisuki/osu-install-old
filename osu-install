@@ -13,7 +13,7 @@ continue="Press ENTER to continue"
 packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
 downloaded="Downloaded."
 spacing="\n\n\n\n\n\n\n"
-gitversion=$(curl ...)
+gitversion=$(curl -s https://raw.githubusercontent.com/yurisuki/osu-install/master/updates/version)
 
 # Check for the version and tell, if the version isn't up-to-date with the github's.
 if [[ $gitversion = $version ]]; then
@@ -244,7 +244,7 @@ if [ $USER == root ]; then
 fi
 
 # Check if dialog is installed
-dialog --help || fuck "Dialog is not installed."
+dialog --help >/dev/null || fuck "Dialog is not installed."
 
 # Welcome message
 welcome || fuck "Interupted by user."

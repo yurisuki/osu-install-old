@@ -32,8 +32,17 @@ Yes, exactly, that's what this script does do! No more need to hassle with the d
 
 # how do I execute this script?
 It's really easy!
+
+1) Install the script:
 ```
-curl https://raw.githubusercontent.com/yurisuki/osu-install/master/osu-install | bash
+git clone https://github.com/yurisuki/osu-install.git
+cd osu-install
+sudo make install
+```
+
+2) Run the script:
+```
+osu-install
 ```
 That's it!
 
@@ -43,6 +52,8 @@ For Arch-based distribution I recommend using the AUR package I maintain.
 # Replace YOURAURHELPER with AUR helper you use (e.g. pacaur, yay, yaourt)
 YOURAURHELPER -S osu-install
 ```
+That one will install osu-install on the machine.
+
 # todo/goals
 - ~~Make installation script for other distros than Arch Linux~~
 
