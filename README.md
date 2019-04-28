@@ -16,6 +16,11 @@ aur
 ---
 osu-install     > used for aur package (edited version of osu-install that doesn't have installation for other distros than Arch Linux.)
 ---
+
+deb
+---
+osu-install.deb > used for debian package (can be used on Ubuntu, Linux Mint etc.)
+---
 ```
 
 ## table of contents
@@ -54,6 +59,18 @@ For Arch-based distribution I recommend using the AUR package I maintain.
 YOURAURHELPER -S osu-install
 ```
 That one will install osu-install on the machine.
+
+#
+
+For Debian based distibution (Ubuntu, Linux Mint etc.) I recommend using the .deb I maintain.
+```
+cd ~
+curl -LO https://github.com/yurisuki/osu-install/raw/master/deb/osu-install.deb
+sudo dpkg -i osu-install.deb
+
+## If you'll have a dependency problem, then install them by:
+# sudo apt-get install -f ## Remove hashtag at the beginning of the command to make them take an effect.
+```
 
 # todo/goals
 - ~~Make installation script for other distros than Arch Linux~~
