@@ -46,6 +46,7 @@ osu-install
 ```
 That's it!
 
+#
 
 For Arch-based distribution I recommend using the AUR package I maintain.
 ```
