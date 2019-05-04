@@ -78,6 +78,7 @@ sudo dpkg -i osu-install.deb
 
 # osu arguments
 `osu` running script has some arguments, which can be easily used.
+
 You can view them by `osu --help`, that will show all available arguments.
 
 # faq
