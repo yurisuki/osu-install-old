@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # This script will install osu! using ThePooN's method and tweaks.
 # Depends on: wine, dialog..
-# This is tweaked version of osu-install for AUR package I maintain.
 
 # Check internet. If no connection was established exit.
 ping -c 1 1.1.1.1 >/dev/null || exit 1
 
 ### Variables
-tits="yuri's osu! installing script (AUR Version)" # It's for title, not for tiddies.
+tits="yuri's osu! installing script" # It's for title, not for tiddies.
 confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
 packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
 downloaded="Downloaded."
 spacing="\n\n\n\n\n\n\n"
+gitversion=$(curl -s https://raw.githubusercontent.com/yurisuki/osu-install/master/updates/version)
 
 ### Functions
 fuck() { # This one will tell you an error.
@@ -22,10 +22,10 @@ fuck() { # This one will tell you an error.
 }
 
 welcome() { # This will greet you :)
-	dialog --title "$tits" --msgbox "Hello! This script will install osu! using ThePooN's method, which includes\nthe low latency patch.\n\n\n$continue" 10 50
+	dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "Hello! This script will install osu! using ThePooN's method, which includes\nthe low latency patch.\n\n\n$continue" 10 50
 }
 
-archdwn() {
+archdwn() { # This one will download all needed packages for the installation
 	echo "Downloading needed packages."
 	echo ----------------------------
 	sudo pacman --noconfirm --needed -Syy $packages 2>&1
@@ -37,10 +37,29 @@ archdwn() {
 	echo "$continue"
 }
 
+winedwn() { # This one will download osu! and give you info about it.
+	echo "Downloading wine ..."
+	echo --------------------
+	curl --output ~/wine-osu.tar.xz https://mirrors.celianvdb.fr/archlinux/thepoon/wine-osu-3.13-1-x86_64.pkg.tar.xz 2>&1
+	echo -e "$spacing"
+	echo "Downloading wine ..."
+	echo --------------------
+	echo "$downloaded"
+	echo -e "$spacing"
+	echo "Downloading winetricks ..."
+	echo -------------------------
+	curl --output ~/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks 2>&1
+	echo -e "$spacing"
+	echo "Downloading winetricks ..."
+	echo -------------------------
+	echo "$downloaded"
+	echo -e "\n\n"
+	echo $continue
+}
 archpreparing() { # This one will prepare all scripts for installation (For arch-based distro)
-	dialog --title "$tits" --infobox "I've detected that you use Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
+	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "I've detected that you use Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
 	sleep 5
-	dialog --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
+	dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
 	sudo pacman-key --keyserver hkps://hkps.pool.sks-keyservers.net -r C0E7D0CDB72FBE95
 	sudo pacman-key --keyserver hkps://hkps.pool.sks-keyservers.net --lsign-key C0E7D0CDB72FBE95
 	cat /etc/pacman.conf | grep thepoon || echo "
@@ -48,7 +67,7 @@ archpreparing() { # This one will prepare all scripts for installation (For arch
 Server = https://archrepo.thepoon.fr
 Server = https://mirrors.celianvdb.fr/archlinux/thepoon" | sudo tee -a /etc/pacman.conf
 
-archdwn | dialog --title "$tits" --programbox 24 90
+archdwn | dialog --backtitle "$tits -- $version" --title "$tits" --programbox 24 90
 }
 
 download_osu() { # This one will download osu! and give you info about it.
@@ -64,7 +83,7 @@ download_osu() { # This one will download osu! and give you info about it.
 }
 
 setupwine() { # This one will make wineprefix and will install osu!.
-	dialog --title "$tits" --infobox "Making wineprefix" 3 21
+	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "Making wineprefix" 3 21
 	sleep 0.5
 	export WINEPREFIX=$HOME/.wine_osu # This is the path to a hidden folder in your home folder.
 	export WINEARCH=win32 # Only needed when executing the first command with that WINEPREFIX
@@ -72,12 +91,12 @@ setupwine() { # This one will make wineprefix and will install osu!.
 	# Arch Linux/wine-osu users should uncomment next line
 	# to update PATH to make sure we're using the right Wine binary
 	export PATH=/opt/wine-osu/bin:$PATH
-	dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "Do not install Mono or Gecko.\n\nPress next at every step.\n\nIf you’re prompted to reboot your computer, no matter the choice it won’t reboot and will be fine." 12 50 || fuck "Nevermind! You can open this script at anytime and the installation will continue." 6 50
-	dialog --title "$tits" --infobox "Installing all dependencies into wineprefix! \n\nThis will take ~2 minutes." 5 50
+	dialog --backtitle "$tits -- $version" --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "Do not install Mono or Gecko.\n\nPress next at every step.\n\nIf you’re prompted to reboot your computer, no matter the choice it won’t reboot and will be fine." 12 50 || fuck "Nevermind! You can open this script at anytime and the installation will continue." 6 50
+	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "Installing all dependencies into wineprefix! \n\nThis will take ~2 minutes." 5 50
 	winetricks --unattended gdiplus dotnet462 >/dev/null & sleep 120 && killall wineserver mscorsvw.exe winetricks
 	mkdir ~/Downloads || clear
 	download_osu | dialog --title "$tits" --programbox 24 90
-	dialog --title "WARNING!" --msgbox "Leave the install dir as it is, otherwise osu! won't work!\n\nCLOSE osu! AFTER IT WAS INSTALLED, AND PRESS ANY KEY
+	dialog --backtitle "$tits -- $version" --title "WARNING!" --msgbox "Leave the install dir as it is, otherwise osu! won't work!\n\nCLOSE osu! AFTER IT WAS INSTALLED, AND PRESS ANY KEY
 IN THE TERMINAL TO MAKE THE SCRIPT CONTINUE!\n\n\n$continue" 13 45 || fuck "You've quit lmao"
 	wine ~/Downloads/osui.exe
 	sleep 15
@@ -124,21 +143,47 @@ cat /etc/pulse/default.pa | grep tsched=0 || exit && echo -e "The sound cracking
 ok && sudo rm /bin/fixcrack' | sudo tee /bin/fixcrack
 
 	echo '#!/usr/bin/env bash
-export WINEPREFIX="$HOME/.wine_osu"
-export STAGING_AUDIO_DURATION=10000 # This one is the most stable value for most people, you can change this down to 5000 (that is the lowest stable value osu! can handle.)
+# This script will turn on osu, if no
+# argument was given, but you can give it
+# an argument, to do some stuff. Use --help to
+# see all arguments.
 
-# Arch Linux/wine-osu users should uncomment next line
-# for the patch to be effective
-export PATH="/opt/wine-osu/bin:$PATH"
+echowrapper() {
+printf "$1"
+exit
+}
 
-cd ~/osudir
-wine osu\!.exe "$@"' | sudo tee /bin/osu
+cd ~/osudir >/dev/null 2>&1 || echowrapper "~/osudir does not exist!\\n" # CD to dir with osu, because all the job will be done here.
+export WINEPREFIX="$HOME/.wine_osu" # Use ~/.wine_osu as WINEPREFIX, because wine without these settings will not be able to do anything with osu.
+export PATH="/opt/wine-osu/bin:$PATH" # Add /opt/wine-osu to PATH, because that is the wine build, that osu-install uses.
 
-	echo '#!/usr/bin/env bash
-export WINEPREFIX="$HOME/.wine_osu"
+wineosu() { # This variable will turn on osu! with STAGING_AUDIO fix.
+	export STAGING_AUDIO_DURATION=10000 # This one is the most stable value for most people, you can change this down to 5000 (that is the lowest stable value osu! can handle.)
 
-wineserver -k' | sudo tee /bin/osukill
-	sudo chmod +x /bin/osukill /bin/osu /bin/fixcrack
+	wine osu\!.exe "$@"
+}
+
+killosu() { # This one will kill osu! and wineserver.
+	wineserver -k
+	echo "Killed!"
+}
+
+removevideos() { # This one will remove all the videos in osudir to save some disk space.
+	find . -name "*.avi" -type f -delete
+	find . -name "*.mp4" -type f -delete
+	find . -name "*.flv" -type f -delete
+	echo "Removed!"
+}
+
+case "$1" in
+	--help) echowrapper "This script will turn on osu! without an argument, but you can give it an argument to run.\\nARGUMENTS\\n---------\\n  --help: Shows this menu\\n  --kill/-k: Kills osu! and wineserver\\n  --removevideos/-rmvids: Removes all videos in ~/osudir to save some space and get some more FPS.\\n" ;;
+	--kill | -k) killosu ;;
+	--removevideos | -rmvids) removevideos ;;
+	--* | -*) echowrapper "This argument does not exist. See all arguments using \"--help\"\\n" ;;
+	*) wineosu ;;
+esac' | sudo tee /bin/osu
+
+	sudo chmod +x /bin/osu /bin/fixcrack
 	curl --output ~/.local/share/icons/osu\!.png https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Osulogo.png/220px-Osulogo.png
 	echo '[Desktop Entry]
 Type=Application
@@ -156,7 +201,8 @@ OPTIONS=(1 "Setup tablet/mouse and much more"
 	 2 "Install osu-stuff (Has osu!direct feature without osu! supporter and much more)"
 	 3 "Install Asian fonts")
 
-selectoutput=$(dialog --title "$tits" \
+selectoutput=$(dialog --backtitle "$tits -- $version" \
+		--title "$tits" \
                 --menu "Do additional things:" \
                 15 40 4 \
                 "${OPTIONS[@]}" \
@@ -191,12 +237,15 @@ if [ $USER == root ]; then
 	fuck "You executed this script as root."
 fi
 
+# Check if dialog is installed
+dialog --help >/dev/null || fuck "Dialog is not installed."
+
 # Welcome message
 welcome || fuck "Interupted by user."
 
 ## AUR
-# Install dependencies
-archpreparing
+# After welcome scripts
+archdwn
 
 # Setup wine after all dependencies were installed
 setupwine
@@ -208,4 +257,5 @@ check_install
 selection
 
 # IT'S DONE JNSAEKLODHSAKJLDHASOKJDHASKJDHKASDHAKSED
-dialog --title "$tits" --msgbox "Everything has been done! Restart your computer to make the latency patch take effect.\nYou can turn on osu! by using 'osu', and\nkill osu! by using 'osukill' (in case osu! freezes or won't start.)\n\nAlso, sound may be cracking (in whole system), you can fix this by running 'fixcrack' command.\n\n~ Thank you for using this script. <3" 15 80
+dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "Everything has been done! Restart your computer to make the latency patch take effect.\nYou can turn on osu! by using 'osu', and\nkill osu! by using 'osu -k' (in case osu! freezes or won't start.)\n\nAlso, sound may be cracking (in whole system), you can fix this by running 'fixcrack' command.\n\nThere are also some more things this script can do.\nSee them by using 'osu --help'\n\n~ Thank you for using this script. <3" 18 80
+
