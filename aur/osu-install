@@ -6,7 +6,8 @@
 ping -c 1 1.1.1.1 >/dev/null || exit 1
 
 ### Variables
-tits="yuri's osu! installing script (AUR Version)" # It's for title, not for tiddies.
+tits="yuri's osu! installing script" # It's for title, not for tiddies.
+version="(AUR Version)"
 confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
 packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
