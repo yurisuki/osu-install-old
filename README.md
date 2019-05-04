@@ -27,6 +27,7 @@ osu-install.deb > used for debian package (can be used on Ubuntu, Linux Mint etc
  - [introduction](#introduction)
  - [how do I execute this script?](#how-do-i-execute-this-script)
  - [todo/goals](#todogoals)
+ - [osu arguments](#osu-arguments)
  - [faq](#faq)
  - [huge thanks to ThePooN!](#huge-thanks-to-thepoon)
 
@@ -74,6 +75,10 @@ sudo dpkg -i osu-install.deb
 
 # todo/goals
 - ~~Make installation script for other distros than Arch Linux~~
+
+# osu arguments
+`osu` running script has some arguments, which can be easily used.
+You can view them by `osu --help`, that will show all available arguments.
 
 # faq
 But why tho?
