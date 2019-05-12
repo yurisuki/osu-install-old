@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version=2.2 # Version of this file
+version=2.1 # Version of this file
 # This script will install osu! using ThePooN's method and tweaks.
 # Depends on: wine, dialog..
 
@@ -14,7 +14,6 @@ packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-li
 downloaded="Downloaded."
 spacing="\n\n\n\n\n\n\n"
 gitversion=$(curl -s https://raw.githubusercontent.com/yurisuki/osu-install/master/updates/version)
-osudir=~/osudir
 
 # Check for the version and tell, if the version isn't up-to-date with the github's.
 if [[ $gitversion = $version ]]; then
@@ -25,16 +24,10 @@ else
 	sleep 5
 fi
 
-
 ### Functions
 fuck() { # This one will tell you an error.
 	clear
 	echo -e "Something has fucked up.\nLog: $1"
-	exit
-}
-
-help() { # This one will show you help menu.
-	printf "This script will install osu! using ThePooN's method and tweaks.\\nARGUMENTS\\n---------\\n --dir: Change osudir (defaulty it's $osudir.)\\n"
 	exit
 }
 
@@ -166,7 +159,7 @@ default-fragment-size-msec = 2 # You can set this to 1, but that will break OBS 
 }
 
 afterwine() { # This one will make osu! scripts
-	ln -sv ~/.wine_osu/drive_c/users/$USER/Local\ Settings/Application\ Data/osu\!/ $osudir
+	ln -sv ~/.wine_osu/drive_c/users/$USER/Local\ Settings/Application\ Data/osu\!/ ~/osudir
 
 	echo '#!/usr/bin/env bash
 # This script will fix the PulseAudio crack.
@@ -193,7 +186,7 @@ printf "$1"
 exit
 }
 
-cd $osudir >/dev/null 2>&1 || echowrapper "$osudir does not exist!\\n" # CD to dir with osu, because all the job will be done here.
+cd ~/osudir >/dev/null 2>&1 || echowrapper "~/osudir does not exist!\\n" # CD to dir with osu, because all the job will be done here.
 export WINEPREFIX="$HOME/.wine_osu" # Use ~/.wine_osu as WINEPREFIX, because wine without these settings will not be able to do anything with osu.
 export PATH="/opt/wine-osu/bin:$PATH" # Add /opt/wine-osu to PATH, because that is the wine build, that osu-install uses.
 
@@ -216,7 +209,7 @@ removevideos() { # This one will remove all the videos in osudir to save some di
 }
 
 case "$1" in
-	--help) echowrapper "This script will turn on osu! without an argument, but you can give it an argument to run.\\nARGUMENTS\\n---------\\n  --help: Shows this menu\\n  --kill/-k: Kills osu! and wineserver\\n  --removevideos/-rmvids: Removes all videos in $osudir to save some space and get some more FPS.\\n" ;;
+	--help) echowrapper "This script will turn on osu! without an argument, but you can give it an argument to run.\\nARGUMENTS\\n---------\\n  --help: Shows this menu\\n  --kill/-k: Kills osu! and wineserver\\n  --removevideos/-rmvids: Removes all videos in ~/osudir to save some space and get some more FPS.\\n" ;;
 	--kill | -k) killosu ;;
 	--removevideos | -rmvids) removevideos ;;
 	--* | -*) echowrapper "This argument does not exist. See all arguments using \"--help\"\\n" ;;
@@ -267,16 +260,9 @@ esac
 }
 
 check_install() {
-ls $osudir | grep osu\!.exe || fuck "Oh no, osu! didn't install.\n\nPossibilities are:\nYou've changed the installation direction.\nosu! installer
+ls ~/osudir | grep osu\!.exe || fuck "Oh no, osu! didn't install.\n\nPossibilities are:\nYou've changed the installation direction.\nosu! installer
 didn't run.\nSome dependencies didn't install.\n\nTry:\nRun the script again\nLeave the installation direction as it should be (defaultly selected by osu! installer)\n\nIf that didn't help try reporting it on GitHub. Thank you. <3"
 }
-
-case "$1" in
-	--help) help ;;
-	--dir) [ -z "$2" ] && fuck "You haven't entered any directory."
-		osudir=$2 ;;
-	*) ;;
-esac
 
 ### Execute variables
 # Check if command was executed with sudo.
