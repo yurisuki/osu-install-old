@@ -7,6 +7,7 @@
   ▓▓▓▓▓▓▓▓▓▓
  ░▓ about  ▓ osu! installation script
  ░▓ author ▓ yurisuki <yurisuki@waifu.club>
+ ░▓ web    ▓ https://yurisuki.github.io/osu-install/
  ░▓▓▓▓▓▓▓▓▓▓
  ░░░░░░░░░░
 
