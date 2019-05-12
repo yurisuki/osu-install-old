@@ -52,7 +52,7 @@ osu-install
 ```
 That's it!
 
-#
+***
 
 For Arch-based distribution I recommend using the AUR package I maintain.
 ```
@@ -61,7 +61,7 @@ YOURAURHELPER -S osu-install
 ```
 That one will install osu-install on the machine.
 
-#
+***
 
 For Debian based distibution (Ubuntu, Linux Mint etc.) I recommend using the .deb I maintain.
 ```
