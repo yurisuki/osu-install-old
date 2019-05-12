@@ -70,7 +70,7 @@ curl -LO https://github.com/yurisuki/osu-install/raw/master/deb/osu-install.deb
 sudo dpkg -i osu-install.deb
 
 ## If you'll have a dependency problem, then install them by:
-# sudo apt-get install -f ## Remove hashtag at the beginning of the command to make them take an effect.
+# sudo apt-get install -f ## Remove hashtag at the beginning of the command to make them take effect.
 ```
 
 # todo/goals
