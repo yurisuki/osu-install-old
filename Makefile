@@ -11,7 +11,6 @@ install:
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/osu-install
 	rm -f /etc/pulse/daemon.conf.d/10-better-latency.conf
-	rm -f /etc/security/limits.conf
 	@echo "Uninstalled!"
 
 
