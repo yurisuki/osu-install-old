@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-version=2.1 # Version of this file
+#!/bin/bash
+version=2.3 # Version of this file
 # This script will install osu! using ThePooN's method and tweaks.
 # Depends on: wine, dialog..
 
@@ -8,7 +8,6 @@ ping -c 1 1.1.1.1 >/dev/null || exit 1
 
 ### Variables
 tits="yuri's osu! installing script" # It's for title, not for tiddies.
-confused="?!?" # To be used by 'fuck' variable
 continue="Press ENTER to continue"
 packages="wine-osu winetricks wine-mono lib32-gnutls lib32-alsa-plugins lib32-libpulse lib32-openal p7zip"
 downloaded="Downloaded."
@@ -16,13 +15,13 @@ spacing="\n\n\n\n\n\n\n"
 gitversion=$(curl -s https://raw.githubusercontent.com/yurisuki/osu-install/master/updates/version)
 
 # Check for the version and tell, if the version isn't up-to-date with the github's.
-if [[ $gitversion = $version ]]; then
-	echo ""
-else
-	echo "Your version is $version, but it's not up-to-date with repository's version, which is $gitversion"
-	echo "Sleeping for 5 seconds."
-	sleep 5
-fi
+notupdated() {
+echo "Your version is $version, but it's not up-to-date with repository's version, which is $gitversion"
+echo "Sleeping for 5 seconds."
+sleep 5
+}
+
+[ "$version" = "$gitversion" ] || notupdated
 
 ### Functions
 fuck() { # This one will tell you an error.
@@ -37,17 +36,17 @@ welcome() { # This will greet you :)
 
 afterwelcome() { # This one will check distro you use.
 	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "Checking distro you ran this script on..."
-	if cat /etc/os-release | egrep "Manjaro|Arch|Antergos|Artix|Parabola"; then
-    		archpreparing
+	if grep "Manjaro\|Arch\|Antergos\|Artix\|Parabola" /etc/*-release ; then
+		archpreparing
 	else
-    		nonarchpreparing
+		nonarchpreparing
 	fi
 }
 
 archdwn() { # This one will download all needed packages for the installation
 	echo "Downloading needed packages."
 	echo ----------------------------
-	sudo pacman --noconfirm --needed -Syy $packages 2>&1
+	sudo pacman --noconfirm --needed -Syy "$packages" 2>&1
 	echo -e "$spacing"
 	echo "Downloading needed packages."
 	echo ----------------------------
@@ -73,7 +72,7 @@ winedwn() { # This one will download osu! and give you info about it.
 	echo -------------------------
 	echo "$downloaded"
 	echo -e "\n\n"
-	echo $continue
+	echo "$continue"
 }
 archpreparing() { # This one will prepare all scripts for installation (For arch-based distro)
 	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "I've detected that you use Arch-based distro. \n\n\nPreparing some stuff before starting the installation." 7 50
@@ -81,7 +80,7 @@ archpreparing() { # This one will prepare all scripts for installation (For arch
 	dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
 	sudo pacman-key --keyserver hkps://hkps.pool.sks-keyservers.net -r C0E7D0CDB72FBE95
 	sudo pacman-key --keyserver hkps://hkps.pool.sks-keyservers.net --lsign-key C0E7D0CDB72FBE95
-	cat /etc/pacman.conf | grep thepoon || echo "
+	grep thepoon < /etc/pacman.conf || echo "
 [thepoon]
 Server = https://archrepo.thepoon.fr
 Server = https://mirrors.celianvdb.fr/archlinux/thepoon" | sudo tee -a /etc/pacman.conf
@@ -94,7 +93,7 @@ nonarchpreparing() { # This one will prepare all scripts for installation (For n
 	sleep 2
 	winedwn | dialog --backtitle "$tits -- $version" --title "$tits" --programbox 24 90
 	dialog --backtitle "$tits -- $version" --title "$tits" --infobox "Extracting wine." 3 25
-	cd ~/
+	cd "${HOME}" || fuck "I wasn't able to cd to ${HOME}."
 	tar xf wine-osu.tar.xz >/dev/null 2>&1
 	dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "You are currently entering sudo mode.\n\nYou will be prompted for password, so enter it in.\n\n\n$continue" 11 50
 	sudo mv -v ~/opt/wine-osu/ /opt/
@@ -112,7 +111,7 @@ download_osu() { # This one will download osu! and give you info about it.
 	echo --------------------
 	echo "$downloaded"
 	echo -e "\n\n"
-	echo $continue
+	echo "$continue"
 }
 
 setupwine() { # This one will make wineprefix and will install osu!.
@@ -133,13 +132,13 @@ setupwine() { # This one will make wineprefix and will install osu!.
 IN THE TERMINAL TO MAKE THE SCRIPT CONTINUE!\n\n\n$continue" 13 45 || fuck "You've quit lmao"
 	wine ~/Downloads/osui.exe
 	sleep 15
-	read -p "Press any key to continue... " -n1 -s
+	read -p "Press any key to continue..." -n1 -s -r
 	wineserver -k
 	fixlatency
 }
 
 fixlatency() { # This one will set up some things after setupwine has succeeded
-	cat /etc/security/limits.conf | grep rtprio || echo -e "$USER - nice -20\n$USER - rtprio 99" | sudo tee -a /etc/security/limits.conf
+	grep rtprio </etc/security/limits.conf || echo -e "${USER} - nice -20\n\n${USER} - rtprio 99" | sudo tee -a /etc/security/limits.conf
 
 	sudo mkdir -p /etc/pulse/daemon.conf.d/
 	echo "high-priority = yes
@@ -153,29 +152,32 @@ resample-method = speex-float-0
 default-fragments = 2 # Minimum is 2
 default-fragment-size-msec = 2 # You can set this to 1, but that will break OBS audio capture." | sudo tee /etc/pulse/daemon.conf.d/10-better-latency.conf
 
-	cat /etc/pulse/default.pa | grep tsched && sudo sed -i -e 's/tsched=1/tsched=0/g' /etc/pulse/default.pa || echo "load-module module-udev-detect tsched=0" | sudo tee -a /etc/pulse/default.pa
-
+	if grep tsched </etc/pulse/default.pa ; then
+		sudo sed -i -e 's/tsched=1/tsched=0/g' /etc/pulse/default.pa
+	else
+		echo "load-module module-udev-detect tsched=0" | sudo tee -a /etc/pulse/default.pa
+	fi
 	afterwine
 }
 
 afterwine() { # This one will make osu! scripts
-	ln -sv ~/.wine_osu/drive_c/users/$USER/Local\ Settings/Application\ Data/osu\!/ ~/osudir
+	ln -sv "${HOME}/.wine_osu/drive_c/users/${USER}/Local Settings/Application Data/osu!/" "${HOME}/osudir"
 
-	echo '#!/usr/bin/env bash
+	printf '#!/usr/bin/env bash
 # This script will fix the PulseAudio crack.
 
 ok() {
 clear
 sudo sed -i -e "s/tsched=0/tsched=1/g" /etc/pulse/default.pa
-wait # I Don't think, you'll need this, but nevermind lmao
+wait
 echo -e "Sound has been fixed!\nReboot your computer for these changes to take effect!"
 }
 
 cat /etc/pulse/default.pa | grep tsched=0 || exit && echo -e "The sound cracking is already fixed." && sudo rm /bin/fixcrack
 
-ok && sudo rm /bin/fixcrack' | sudo tee /bin/fixcrack
+ok && sudo rm /bin/fixcrack\n' | sudo tee /bin/fixcrack
 
-	echo '#!/usr/bin/env bash
+osufile='#!/usr/bin/env bash
 # This script will turn on osu, if no
 # argument was given, but you can give it
 # an argument, to do some stuff. Use --help to
@@ -214,8 +216,8 @@ case "$1" in
 	--removevideos | -rmvids) removevideos ;;
 	--* | -*) echowrapper "This argument does not exist. See all arguments using \"--help\"\\n" ;;
 	*) wineosu ;;
-esac' | sudo tee /bin/osu
-
+esac'
+	echo "$osufile" | sudo tee /bin/osu
 	sudo chmod +x /bin/osu /bin/fixcrack
 	curl --output ~/.local/share/icons/osu\!.png https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Osulogo.png/220px-Osulogo.png
 	echo '[Desktop Entry]
@@ -260,15 +262,13 @@ esac
 }
 
 check_install() {
-ls ~/osudir | grep osu\!.exe || fuck "Oh no, osu! didn't install.\n\nPossibilities are:\nYou've changed the installation direction.\nosu! installer
+grep osu\!.exe <(ls "${HOME}/osudir") || fuck "Oh no, osu! didn't install.\n\nPossibilities are:\nYou've changed the installation direction.\nosu! installer
 didn't run.\nSome dependencies didn't install.\n\nTry:\nRun the script again\nLeave the installation direction as it should be (defaultly selected by osu! installer)\n\nIf that didn't help try reporting it on GitHub. Thank you. <3"
 }
 
 ### Execute variables
 # Check if command was executed with sudo.
-if [ $USER == root ]; then
-	fuck "You executed this script as root."
-fi
+[ "${USER}" = "root" ] && fuck "You executed this script as root."
 
 # Check if dialog is installed
 dialog --help >/dev/null || fuck "Dialog is not installed."
@@ -290,4 +290,3 @@ selection
 
 # IT'S DONE JNSAEKLODHSAKJLDHASOKJDHASKJDHKASDHAKSED
 dialog --backtitle "$tits -- $version" --title "$tits" --msgbox "Everything has been done! Restart your computer to make the latency patch take effect.\nYou can turn on osu! by using 'osu', and\nkill osu! by using 'osu -k' (in case osu! freezes or won't start.)\n\nAlso, sound may be cracking (in whole system), you can fix this by running 'fixcrack' command.\n\nThere are also some more things this script can do.\nSee them by using 'osu --help'\n\n~ Thank you for using this script. <3" 18 80
-
