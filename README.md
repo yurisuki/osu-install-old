@@ -34,7 +34,7 @@ docs
  - [how do I execute this script?](#how-do-i-execute-this-script)
  - [todo/goals](#todogoals)
  - [osu arguments](#osu-arguments)
- - [faq](#faq)
+ - [faq](https://yurisuki.github.io/osu-install/#faq)
  - [huge thanks to ThePooN!](#huge-thanks-to-thepoon)
 
 # introduction
@@ -86,10 +86,6 @@ sudo dpkg -i osu-install.deb
 `osu` running script has some arguments, which can be easily used.
 
 You can view them by `osu --help`, that will show all available arguments.
-
-# faq
-But why tho?
-- It takes really long time to install osu! on Linux manually and it's tiring. That's why I made this.
 
 # huge thanks to ThePooN!
 He made the low-latency on PulseAudio possible, thank you for that. He did all the work, and I just stole it.
