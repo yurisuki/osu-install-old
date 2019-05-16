@@ -22,6 +22,11 @@ deb
 ---
 osu-install.deb > used for debian package (can be used on Ubuntu, Linux Mint etc.)
 ---
+
+docs
+----
+... 		> all these files are used by website (https://yurisuki.github.io/osu-install/)
+----
 ```
 
 ## table of contents
