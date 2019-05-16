@@ -35,6 +35,7 @@ docs
  - [todo/goals](#todogoals)
  - [osu arguments](#osu-arguments)
  - [faq](https://yurisuki.github.io/osu-install/#faq)
+ - [contact](#contacting-me)
  - [huge thanks to ThePooN!](#huge-thanks-to-thepoon)
 
 # introduction
@@ -86,6 +87,11 @@ sudo dpkg -i osu-install.deb
 `osu` running script has some arguments, which can be easily used.
 
 You can view them by `osu --help`, that will show all available arguments.
+
+# contacting me
+You can contact me with anything related to osu-install or osu-stuff [here.](https://yurisuki.github.io/osu-install/#contact)
+
+Anything non-related to these projects will be more than welcomed in my spam folder.
 
 # huge thanks to ThePooN!
 He made the low-latency on PulseAudio possible, thank you for that. He did all the work, and I just stole it.
