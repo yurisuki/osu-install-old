@@ -89,7 +89,7 @@ sudo dpkg -i osu-install.deb
 You can view them by `osu --help`, that will show all available arguments.
 
 # contacting me
-You can contact me with anything related to osu-install or osu-stuff [here.](https://yurisuki.github.io/osu-install/#contact)
+You can contact me with anything related to [osu-install](https://github.com/yurisuki/osu-install) or [osu-stuff](https://github.com/yurisuki/osu-stuff) [here.](https://yurisuki.github.io/osu-install/#contact)
 
 Anything non-related to these projects will be more than welcomed in my spam folder.
 
