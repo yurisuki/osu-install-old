@@ -28,7 +28,7 @@ docs
 * 		> all these files are used by website (https://yurisuki.github.io/osu-install/)
 ----
 ```
-
+# STAY TUNED, TILL THE END OF THIS YEAR. THERE WILL BE REWRITTEN OSU-INSTALL
 ## table of contents
  - [introduction](#introduction)
  - [how do I execute this script?](#how-do-i-execute-this-script)
